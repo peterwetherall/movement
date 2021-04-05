@@ -5,7 +5,7 @@ const io = require("socket.io")(server, {});
 const port = 8080;
 
 let size = 50;
-let speed = 0.2;
+let speed = 0.1;
 let framerate = 60;
 
 let store = {};

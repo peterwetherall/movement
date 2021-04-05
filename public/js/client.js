@@ -7,6 +7,8 @@ wrapper.keyboard = {
 	"down": false
 };
 
+wrapper.loopActive = false;
+
 wrapper.keyboardChange = (data) => {
 	wrapper.socket.emit("m", data);
 };
@@ -60,6 +62,12 @@ window.onload = () => {
 	wrapper.ctx = wrapper.canvas.getContext("2d");
 	
 	wrapper.socket.on("u", binary => {
+		//If first data received from the server, begin the game loop
+		if (wrapper.loopActive === false) {
+			wrapper.loopActive = true;
+			wrapper.gameLoop();
+		}
+		//Decode the data
 		let data = JSON.parse(new TextDecoder().decode(binary));
 		wrapper.ctx.clearRect(0, 0, wrapper.canvas.width, wrapper.canvas.height);
 		for (let player in data) {
@@ -74,4 +82,12 @@ window.onload = () => {
 		}
 	});
 	
+};
+
+wrapper.gameLoop = () => {
+	//Request animation frame is game loop is active
+	if (wrapper.loopActive) {
+		requestAnimationFrame(wrapper.gameLoop);
+	}
+	//
 };
